@@ -1,0 +1,21 @@
+{
+  issuer: 'https://companydirect--devsudeep.lightning.force.com/',
+  inResponseTo: '_dd95e4f3535b90997180',
+  nameID: 'sudeep.ghag@company.com.devsudeep',
+  nameIDFormat: 'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified',
+  nameQualifier: undefined,
+  spNameQualifier: undefined,
+  userId: '0050W000007Jz7j',
+  username: 'sudeep.ghag@company.com.devsudeep',
+  email: 'sudeep.ghag@companydirect.com',
+  is_portal_user: 'false',
+  attributes: {
+    userId: '0050W000007Jz7j',
+    username: 'sudeep.ghag@company.com.devsudeep',
+    email: 'sudeep.ghag@companydirect.com',
+    is_portal_user: 'false'
+  },
+  getAssertionXml: [Function (anonymous)],
+  getAssertion: [Function (anonymous)],
+  getSamlResponseXml: [Function (anonymous)]
+}

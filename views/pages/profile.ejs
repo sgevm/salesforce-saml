@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('../partials/head'); %>
+    </head>
+    <body class="container">
+
+        <header>
+            <%- include('../partials/header'); %>
+        </header>
+
+        <main>
+            <div class="jumbotron">
+                <h1>Profile</h1>
+                <p>User Details:</p>
+                <% if (passport) { %>
+                    <% if (passport.user) { %>
+                    <h4>Username:</h4><span><%= passport.user.username %></span>
+                    <h4>Email:</h4><span><%= passport.user.id %></span>
+                    <% } %>
+                <% } %>
+            </div>
+        </main>
+
+        <footer>
+            <%- include('../partials/footer'); %>
+        </footer>
+
+    </body>
+</html>

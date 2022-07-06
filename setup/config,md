@@ -1,0 +1,80 @@
+# Salesforce Confiuration
+### Identity Configuration --> enable
+### Connected App Setup
+```
+
+Basic Information
+Start URL: http://localhost:3000   (service provider app url)
+
+SAML Service Provider Settings:
+Entity Id:	HEROKUWEBAPPDEV01	(unique string to identify service provier app by IdP)
+ACS URL:	http://localhost:3000/saml/callback	(this is the URL, when IdP will send SAML POST response)
+Subject Type:	Username	
+Issuer:	https://company--devsudeep.lightning.force.com/	(salesforce application URL/IdP)
+Idp Certificate:	Default IdP Certificate	 	 
+Name ID Format:	urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified	 	 
+Signing Algorithm for SAML Messages:	SHA1	 	 
+Verify Request Signatures:	 	 	 
+Enable Single Logout:	Disabled	 	 
+SAML Login Information:
+
+View and download SAML endpoint metadata for your org, Experience Cloud sites, or custom domains.
+Your Organization
+IdP-Initiated Login URL	https://company--devsudeep.my.salesforce.com/idp/login?app=0sp75000000002g
+SP-Initiated POST Endpoint	https://company--devsudeep.my.salesforce.com/idp/endpoint/HttpPost
+SP-Initiated Redirect Endpoint	https://company--devsudeep.my.salesforce.com/idp/endpoint/HttpRedirect
+Metadata Discovery Endpoint	https://company--devsudeep.my.salesforce.com/.well-known/samlidp/Heroku_Web_App.xml
+Single Logout Endpoint	https://company--devsudeep.my.salesforce.com/services/auth/idp/saml2/logout
+
+```
+### Grant user's profile/permission set with above connected app
+
+
+## SAML config:
+```
+passport.use(new SamlStrategy(
+    {
+      path: '/saml/callback',
+      entryPoint: 'https://company--devsudeep.my.salesforce.com/idp/endpoint/HttpRedirect',
+      issuer: 'HEROKUWEBAPPDEV01', //(unique string to identify service provier app by IdP)
+      cert: 'certificate value from metadata', // cert must be provided
+      identifierFormat: 'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified'
+    },
+    function(profile, done) {
+        console.log(profile);
+        // findByEmail(profile.email, function(err, user) {
+        //     if (err) {
+        //     return done(err);
+        //     }
+        //     return done(null, user);
+        // });
+        user.username=profile.username;
+        user.email=profile.email;
+        user.userId=profile.nameID;
+        done(null, user);
+    })
+);
+
+Profile:
+{
+  issuer: 'https://company--devsudeep.lightning.force.com/',
+  inResponseTo: '_dd95e4f3535b90997180',
+  nameID: 'sudeep.ghag@company.com.devsudeep',
+  nameIDFormat: 'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified',
+  nameQualifier: undefined,
+  spNameQualifier: undefined,
+  userId: '0050W000007Jz7j',
+  username: 'sudeep.ghag@company.com.devsudeep',
+  email: 'sudeep.ghag@company.com',
+  is_portal_user: 'false',
+  attributes: {
+    userId: '0050W000007Jz7j',
+    username: 'sudeep.ghag@company.com.devsudeep',
+    email: 'sudeep.ghag@company.com',
+    is_portal_user: 'false'
+  },
+  getAssertionXml: [Function (anonymous)],
+  getAssertion: [Function (anonymous)],
+  getSamlResponseXml: [Function (anonymous)]
+}
+```
