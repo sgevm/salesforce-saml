@@ -18,8 +18,6 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(cookieParser());
 
-app.use(passport.authenticate('session'));
-
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
@@ -31,6 +29,7 @@ app.use(session({
   }
 }));
 
+app.use(passport.authenticate('session'));
 
 //bind router
 app.use((req,res,next)=>{ 
