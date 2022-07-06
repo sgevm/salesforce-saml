@@ -25,7 +25,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: { 
-      secure: process.env.COOKIE_SECURE,
+      secure: (process.env.COOKIE_SECURE=='false'?false:true),
       httpOnly: true,
       sameSite: 'none'
   }
@@ -82,7 +82,7 @@ app.use((req,res,next)=>{
   console.log('# # # body:');
   res.locals.passport=req.session.passport;
   if(req.body){
-    console.log(req.body);
+    //console.log(req.body);
   }
   console.log('# # # param:');
   if(req.params){
