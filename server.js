@@ -38,7 +38,7 @@ app.use((req,res,next)=>{
   console.log('# # # body:');
   res.locals.passport=req.session.passport;
   if(req.body){
-    //console.log(req.body);
+    console.log(req.body);
   }
   console.log('# # # param:');
   if(req.params){
