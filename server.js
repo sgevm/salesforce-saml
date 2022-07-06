@@ -3,8 +3,6 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 var passport = require('passport');
 var session = require('express-session');
-// Importing file-store module
-const filestore = require("session-file-store")(session)
 
 const app = express();
 const approuter = require("./routes/approuter");
@@ -20,6 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(cookieParser());
 
+app.use(passport.authenticate('session'));
 
 app.use(session({
     secret: 'keyboard cat',
@@ -31,7 +30,7 @@ app.use(session({
       sameSite: 'none'
   }
 }));
-app.use(passport.authenticate('session'));
+
 
 //bind router
 app.use((req,res,next)=>{ 
@@ -54,7 +53,7 @@ app.use((req,res,next)=>{
     req.cookies.redirect_url='/';
   }
   next();
-}); //logging
+}); 
 
 app.use('/', approuter);
 app.use('/', authrouter);
