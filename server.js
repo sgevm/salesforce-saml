@@ -10,6 +10,10 @@ const approuter = require("./routes/approuter");
 const authrouter = require("./routes/auth");
 var user= {};
 
+const COOKIE_OPTIONS = {
+  secure: process.env.NODE_ENV !== "development",
+  httpOnly: true
+};
 // set the view engine to ejs
 app.set('view engine', 'ejs');
 //set static folder
@@ -24,11 +28,7 @@ app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
-    cookie: { 
-      secure: (process.env.COOKIE_SECURE=='false'?false:true),
-      httpOnly: true,
-      sameSite: 'none'
-  }
+    cookie: COOKIE_OPTIONS
 }));
 passport.use(new SamlStrategy(
   {
@@ -93,7 +93,8 @@ app.use((req,res,next)=>{
     //console.log(req.headers);
   }    
   if (req.originalUrl==req.cookies.redirect_url) {
-    req.cookies.redirect_url='/';
+    res.cookie('redirect_url', '/', COOKIE_OPTIONS);
+    res.locals.redirect_url='/';
   }
   next();
 }); 

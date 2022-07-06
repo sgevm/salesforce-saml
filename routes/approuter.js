@@ -1,7 +1,10 @@
 var express = require('express');
 const router = express.Router();
 
-
+const COOKIE_OPTIONS = {
+  secure: process.env.NODE_ENV !== "development",
+  httpOnly: true
+};
 
 // router.use(express.json());
 // router.use(express.urlencoded({ extended: false }));
@@ -41,6 +44,7 @@ router.get('/profile', function(req, res) {
   if (req.isAuthenticated()) {
     res.render('pages/profile');
   }else{
+    res.cookie('redirect_url','profile',COOKIE_OPTIONS);
     req.session.redirect_url=req.originalUrl;
     res.redirect('login'+'/?redir=profile');
   }
@@ -55,6 +59,7 @@ router.get('/api', function(req, res) {
     if (req.isAuthenticated()) {
       res.render('pages/api');
     }else{
+      res.cookie('redirect_url','api',COOKIE_OPTIONS);
       req.session.redirect_url=req.originalUrl;
       res.redirect('login'+'/?redir=api');
     }    

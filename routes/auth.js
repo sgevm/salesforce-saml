@@ -3,7 +3,10 @@ var express = require('express');
 const passport = require("passport");
 const router = express.Router();
 
-
+const COOKIE_OPTIONS = {
+  secure: process.env.NODE_ENV !== "development",
+  httpOnly: true
+};
 
 console.log('-----auth-----');
 
@@ -60,15 +63,20 @@ router.post('/saml/callback',
 		}
 );
 
+var path ='';
 
-router.get("/login", passport.authenticate('saml',{
-    successRedirect : "/",
+router.get("/login", (req,res,next)=>{
+  const redir_url = req.cookies.redirect_url;
+  path = (typeof redir_url==='undefined' || redir_url==='/'?'':redir_url);
+  next();
+  },passport.authenticate('saml',{
+    successRedirect : "/" + path,
     failureRedirect : "/login",
 }));
 
 
 router.get('/logout', (req, res)=>{
-    res.cookie('redirect_url', '/');
+    res.cookie('redirect_url', '/', COOKIE_OPTIONS);
     req.session.destroy();
     res.redirect('/');    
 });
