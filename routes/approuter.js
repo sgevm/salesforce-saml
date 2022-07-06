@@ -33,10 +33,11 @@ router.get('/about', function(req, res) {
   res.render('pages/about');
 });
 
+
 // # # # PROTECTED RESOURCE # # # 
 // profile page
 router.get('/profile', function(req, res) {
-  console.log('-----approuter----- /profile . isAuthenticated='+req.isAuthenticated());
+  console.log('-----approuter----- /profile');
   if (req.isAuthenticated()) {
     res.render('pages/profile');
   }else{

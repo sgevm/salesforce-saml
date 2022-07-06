@@ -1,12 +1,14 @@
 const path = require("path");
 const express = require('express');
 const cookieParser = require('cookie-parser');
-var passport = require('passport');
-var session = require('express-session');
+const passport = require('passport');
+const SamlStrategy = require('passport-saml').Strategy;
+const session = require('express-session');
 
 const app = express();
 const approuter = require("./routes/approuter");
 const authrouter = require("./routes/auth");
+var user= {};
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
@@ -23,11 +25,53 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: { 
-      secure: true,
+      secure: false,
       httpOnly: true,
       sameSite: 'none'
   }
 }));
+passport.use(new SamlStrategy(
+  {
+    path: process.env.SAML_CALLBACK_URL,
+    entryPoint: process.env.SAML_ENTRYPOINT,
+    issuer: process.env.SAML_ISSUER,
+    cert: process.env.SAML_CERT, // cert must be provided
+    identifierFormat: process.env.SAML_IDENTIFIER_FORMAT
+  },
+  function(profile, done) {
+      console.log('---- passport.SamlStrategy . profile');
+      console.log(profile);
+      // findByEmail(profile.email, function(err, user) {
+      //     if (err) {
+      //     return done(err);
+      //     }
+      //     return done(null, user);
+      // });
+      user.username=profile.username;
+      user.email=profile.email;
+      user.userId=profile.nameID;
+      done(null, user);
+  })
+);
+
+
+passport.serializeUser(function(user, cb) {
+  console.log('-----auth----- __passport.serializeUser__');
+  console.log(user);
+  process.nextTick(function() {
+    console.log('-----auth----- __process.nextTick__ user.email:' + user.email);
+    cb(null, { id: user.email, username: user.username });
+  });
+});
+
+passport.deserializeUser(function(user, cb) {
+  console.log('-----auth----- __passport.deserializeUser');
+  console.log(user);    
+  process.nextTick(function() {
+    return cb(null, user);
+  });
+});
+
 
 app.use(passport.authenticate('session'));
 
@@ -67,7 +111,7 @@ app.use('/', (req, res, next) => {
 app.use(logErrors);
 app.use(clientErrorHandler);
 
-const HTTP_PORT = process.env.PORT||8080;
+const HTTP_PORT = process.env.PORT||3000;
 app.listen(HTTP_PORT);
 console.log(`Server is listening on port ${HTTP_PORT}`);
 
