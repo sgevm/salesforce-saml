@@ -64,9 +64,9 @@ app.use('/', (req, res, next) => {
 app.use(logErrors);
 app.use(clientErrorHandler);
 
-const PORT = process.env.PORT|8080;
-app.listen(PORT);
-console.log(`Server is listening on port ${PORT}`);
+const HTTP_PORT = process.env.PORT||8080;
+app.listen(HTTP_PORT);
+console.log(`Server is listening on port ${HTTP_PORT}`);
 
 // --- Error Handingling functions ---
 
