@@ -24,7 +24,10 @@ app.use(cookieParser());
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: { 
+      secure: true
+  }
 }));
 app.use(passport.authenticate('session'));
 
