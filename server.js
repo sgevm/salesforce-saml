@@ -13,7 +13,7 @@ var user= {};
 const COOKIE_OPTIONS = {
   secure: process.env.NODE_ENV !== "development",
   httpOnly: true,
-  samesite: 'none'
+  sameSite: 'none'
 };
 // set the view engine to ejs
 app.set('view engine', 'ejs');
