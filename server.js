@@ -11,6 +11,8 @@ const approuter = require("./routes/approuter");
 const authrouter = require("./routes/auth");
 var user= {};
 
+var SQLiteStore = require('connect-sqlite3')(session);
+
 const COOKIE_OPTIONS = {
   secure: process.env.NODE_ENV !== "development",
   httpOnly: true,
@@ -31,7 +33,8 @@ app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
-    cookie: COOKIE_OPTIONS
+    cookie: COOKIE_OPTIONS,
+    store: new SQLiteStore({ db: 'sessions.db', dir: './db' })
 }));
 passport.use(new SamlStrategy(
   {
