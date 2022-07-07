@@ -11,7 +11,7 @@ const COOKIE_OPTIONS = {
 // router.use(express.json());
 // router.use(express.urlencoded({ extended: false }));
 
-console.log('-----approuter-----');
+console.log('-----approuter-----'); 
 
 // index page
 router.get('/', function(req, res) {
