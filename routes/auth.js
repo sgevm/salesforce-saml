@@ -6,7 +6,7 @@ const router = express.Router();
 const COOKIE_OPTIONS = {
   secure: process.env.NODE_ENV !== "development",
   httpOnly: true,
-  SameSite: 'None'
+  samesite: 'none'
 };
 
 console.log('-----auth-----');
