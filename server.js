@@ -97,6 +97,7 @@ app.use((req,res,next)=>{
     res.cookie('redirect_url', '/', COOKIE_OPTIONS);
     res.locals.redirect_url='/';
   }
+  res.locals.sessionId = req.session.id;
   next();
 }); 
 
